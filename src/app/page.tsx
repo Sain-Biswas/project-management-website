@@ -5,8 +5,8 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+    <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 sm:p-20">
+      <main className="row-start-2 flex flex-col items-center gap-[32px] sm:items-start">
         <Image
           className="dark:invert"
           src="/next.svg"
@@ -15,10 +15,10 @@ export default function Home() {
           height={38}
           priority
         />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
+        <ol className="list-inside list-decimal text-center font-[family-name:var(--font-geist-mono)] text-sm/6 sm:text-left">
           <li className="mb-2 tracking-[-.01em]">
             Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
+            <code className="rounded bg-black/[.05] px-1 py-0.5 font-[family-name:var(--font-geist-mono)] font-semibold dark:bg-white/[.06]">
               src/app/page.tsx
             </code>
             .
@@ -30,8 +30,8 @@ export default function Home() {
 
         <ModeToggleButton />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <Button className="px-4 sm:px-5 h-10 sm:h-12 rounded-full">
+        <div className="flex flex-col items-center gap-4 sm:flex-row">
+          <Button className="h-10 rounded-full px-4 sm:h-12 sm:px-5">
             <Link
               className="flex gap-2"
               href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
@@ -48,7 +48,7 @@ export default function Home() {
           </Button>
           <Button
             variant={"outline"}
-            className="px-4 sm:px-5 h-10 sm:h-12 rounded-full"
+            className="h-10 rounded-full px-4 sm:h-12 sm:px-5"
           >
             <Link
               href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
@@ -59,7 +59,7 @@ export default function Home() {
           </Button>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
+      <footer className="row-start-3 flex flex-wrap items-center justify-center gap-[24px]">
         <a
           className="flex items-center gap-2 hover:underline hover:underline-offset-4"
           href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
