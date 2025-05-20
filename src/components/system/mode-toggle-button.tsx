@@ -5,6 +5,9 @@ import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
 
+/**
+ * A button component that changes app theme between light & dark color scheme on click.
+ */
 export function ModeToggleButton() {
   const { theme, setTheme } = useTheme();
 
