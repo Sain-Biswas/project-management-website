@@ -1,12 +1,15 @@
 import { usersSchema } from "@/server/database/schema/users.schema";
-import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-export const sessionSchema = pgTable("SESSION", {
+/**
+ * Schema for Authentication Session for the application user activity.
+ */
+export const sessionSchema = sqliteTable("SESSION", {
   id: text("ID").primaryKey(),
-  expiresAt: timestamp("EXPIRES_AT").notNull(),
+  expiresAt: integer("EXPIRES_AT", { mode: "timestamp" }).notNull(),
   token: text("TOKEN").notNull().unique(),
-  createdAt: timestamp("CREATED_AT").notNull(),
-  updatedAt: timestamp("UPDATED_AT").notNull(),
+  createdAt: integer("CREATED_AT", { mode: "timestamp" }).notNull(),
+  updatedAt: integer("UPDATED_AT", { mode: "timestamp" }).notNull(),
   ipAddress: text("IP_ADDRESS"),
   userAgent: text("USER_AGENT"),
   userId: text("USER_ID")

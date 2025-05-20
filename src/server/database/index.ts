@@ -1,30 +1,16 @@
-import {
-  neon,
-  neonConfig,
-  type NeonQueryFunction
-} from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
+import { createClient } from "@libsql/client";
+import { drizzle } from "drizzle-orm/libsql";
 
 import envServer from "@/constants/envServer";
 import * as schema from "@/server/database/schema/index.schema";
 
 /**
- * Setup websocket
+ * Libsql client for accessing sqlite database
  */
-import ws from "ws";
-neonConfig.webSocketConstructor = ws;
-neonConfig.poolQueryViaFetch = true;
-
-/**
- * Cache the database connection in development. This avoids creating a new connection on every HMR
- * update.
- */
-const globalForDb = globalThis as unknown as {
-  conn: NeonQueryFunction<false, false> | undefined;
-};
-
-const client = globalForDb.conn ?? neon(envServer.DATABASE_URL);
-if (envServer.NODE_ENV !== "production") globalForDb.conn = client;
+const client = createClient({
+  url: envServer.DATABASE_URL,
+  authToken: envServer.DATABASE_AUTH_TOKEN
+});
 
 /**
  * Drizzle database client for interacting with the neon postgres database.

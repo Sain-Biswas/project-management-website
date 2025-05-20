@@ -1,7 +1,10 @@
 import { usersSchema } from "@/server/database/schema/users.schema";
-import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
-export const accountSchema = pgTable("ACCOUNT", {
+/**
+ * Schema for Authentication Accounts for the application.
+ */
+export const accountSchema = sqliteTable("ACCOUNT", {
   id: text("ID").primaryKey(),
   accountId: text("ACCOUNT_ID").notNull(),
   providerId: text("PROVIDER_ID").notNull(),
@@ -11,10 +14,14 @@ export const accountSchema = pgTable("ACCOUNT", {
   accessToken: text("ACCESS_TOKEN"),
   refreshToken: text("REFRESH_TOKEN"),
   idToken: text("ID_TOKEN"),
-  accessTokenExpiresAt: timestamp("ACCESS_TOKEN_EXPIRES_AT"),
-  refreshTokenExpiresAt: timestamp("REFRESH_TOKEN_EXPIRES_AT"),
+  accessTokenExpiresAt: integer("ACCESS_TOKEN_EXPIRES_AT", {
+    mode: "timestamp"
+  }),
+  refreshTokenExpiresAt: integer("REFRESH_TOKEN_EXPIRES_AT", {
+    mode: "timestamp"
+  }),
   scope: text("SCOPE"),
   password: text("PASSWORD"),
-  createdAt: timestamp("CREATED_AT").notNull(),
-  updatedAt: timestamp("UPDATED_AT").notNull()
+  createdAt: integer("CREATED_AT", { mode: "timestamp" }).notNull(),
+  updatedAt: integer("UPDATED_AT", { mode: "timestamp" }).notNull()
 });

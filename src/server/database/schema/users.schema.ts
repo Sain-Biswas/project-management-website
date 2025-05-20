@@ -1,23 +1,23 @@
-import { boolean, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 /**
  * Schema for Users for the application.
  */
-export const usersSchema = pgTable("USERS", {
+export const usersSchema = sqliteTable("USERS", {
   id: text("ID")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   name: text("NAME").notNull(),
   email: text("EMAIL").unique().notNull(),
-  emailVerified: boolean("EMAIL_VERIFIED")
+  emailVerified: integer("EMAIL_VERIFIED", { mode: "boolean" })
     .notNull()
     .$defaultFn(() => false),
   password: text("PASSWORD"),
   image: text("IMAGE"),
-  createdAt: timestamp("CREATED_AT")
+  createdAt: integer("CREATED_AT", { mode: "timestamp" })
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull(),
-  updatedAt: timestamp("UPDATED_AT")
+  updatedAt: integer("UPDATED_AT", { mode: "timestamp" })
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull()
 });

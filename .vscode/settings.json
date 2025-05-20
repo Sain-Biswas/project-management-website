@@ -9,5 +9,14 @@
     "source.sortImports": "always"
   },
 
-  "cSpell.words": ["johndoe", "typesafety"]
+  "cSpell.words": [
+    "cmdk",
+    "johndoe",
+    "libsql",
+    "sonner",
+    "tabler",
+    "turso",
+    "typesafety",
+    "vaul"
+  ]
 }

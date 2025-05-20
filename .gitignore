@@ -47,6 +47,7 @@ next-env.d.ts
 
 # database
 .drizzle/
+*.db
 
 # others
 auth-schema.ts

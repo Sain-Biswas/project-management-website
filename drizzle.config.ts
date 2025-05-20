@@ -2,15 +2,12 @@ import { type Config } from "drizzle-kit";
 
 import envServer from "@/constants/envServer";
 
-import { neonConfig } from "@neondatabase/serverless";
-import ws from "ws";
-neonConfig.webSocketConstructor = ws;
-
 export default {
   out: "./.drizzle/",
   schema: "./src/server/database/schema/index.schema.ts",
-  dialect: "postgresql",
+  dialect: "turso",
   dbCredentials: {
-    url: envServer.DATABASE_URL
+    url: envServer.DATABASE_URL,
+    authToken: envServer.DATABASE_AUTH_TOKEN
   }
 } satisfies Config;
