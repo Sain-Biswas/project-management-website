@@ -15,6 +15,11 @@ const globalForDb = globalThis as unknown as {
 const client = globalForDb.conn ?? neon(envServer.DATABASE_URL);
 if (envServer.NODE_ENV !== "production") globalForDb.conn = client;
 
+/**
+ * Drizzle database client for interacting with the neon postgres database.
+ *
+ * This is used throughout the codebase to fire CRUD operations and modifying content on the database.
+ */
 const database = drizzle({ client, schema });
 
 export default database;
