@@ -1,0 +1,20 @@
+import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
+
+import envServer from "@/constants/envServer";
+import * as schema from "@/server/database/schema/index.schema";
+
+/**
+ * Cache the database connection in development. This avoids creating a new connection on every HMR
+ * update.
+ */
+const globalForDb = globalThis as unknown as {
+  conn: NeonQueryFunction<false, false> | undefined;
+};
+
+const client = globalForDb.conn ?? neon(envServer.DATABASE_URL);
+if (envServer.NODE_ENV !== "production") globalForDb.conn = client;
+
+const database = drizzle({ client, schema });
+
+export default database;
