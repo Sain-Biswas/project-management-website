@@ -25,6 +25,7 @@
 *.pem
 .vscode/**
 !.vscode/settings.json
+.idea/
 
 # debug
 npm-debug.log*
