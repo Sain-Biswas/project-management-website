@@ -9,13 +9,15 @@ export const usersSchema = pgTable("USERS", {
     .$defaultFn(() => crypto.randomUUID()),
   name: text("NAME").notNull(),
   email: text("EMAIL").unique().notNull(),
-  emailVerified: boolean("EMAIL_VERIFIED"),
+  emailVerified: boolean("EMAIL_VERIFIED")
+    .notNull()
+    .$defaultFn(() => false),
   password: text("PASSWORD"),
-  image: text("image"),
-  createdAt: timestamp("created_at")
+  image: text("IMAGE"),
+  createdAt: timestamp("CREATED_AT")
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull(),
-  updatedAt: timestamp("updated_at")
+  updatedAt: timestamp("UPDATED_AT")
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull()
 });

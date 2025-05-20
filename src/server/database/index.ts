@@ -1,8 +1,19 @@
-import { neon, type NeonQueryFunction } from "@neondatabase/serverless";
+import {
+  neon,
+  neonConfig,
+  type NeonQueryFunction
+} from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 
 import envServer from "@/constants/envServer";
 import * as schema from "@/server/database/schema/index.schema";
+
+/**
+ * Setup websocket
+ */
+import ws from "ws";
+neonConfig.webSocketConstructor = ws;
+neonConfig.poolQueryViaFetch = true;
 
 /**
  * Cache the database connection in development. This avoids creating a new connection on every HMR

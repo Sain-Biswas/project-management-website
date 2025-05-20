@@ -1,6 +1,4 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib",
-
   "editor.formatOnSave": true,
 
   "editor.codeActionsOnSave": {
@@ -11,8 +9,5 @@
     "source.sortImports": "always"
   },
 
-  "files.associations": {
-    "*.css": "tailwindcss"
-  },
-  "cSpell.words": ["typesafety"]
+  "cSpell.words": ["johndoe", "typesafety"]
 }
