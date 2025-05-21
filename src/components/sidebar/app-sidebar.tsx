@@ -1,6 +1,3 @@
-import { IconInnerShadowTop } from "@tabler/icons-react";
-import * as React from "react";
-
 import { NavDocuments } from "@/components/sidebar/nav-documents";
 import { NavMain } from "@/components/sidebar/nav-main";
 import { NavSecondary } from "@/components/sidebar/nav-secondary";
@@ -9,29 +6,21 @@ import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem
+  SidebarHeader
 } from "@/components/ui/sidebar";
+import { Suspense } from "react";
+import {
+  OrganizationSwitcher,
+  SuspendedOrganizationSwitcher
+} from "./organization-switcher";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              className="data-[slot=sidebar-menu-button]:!p-1.5"
-            >
-              <a href="#">
-                <IconInnerShadowTop className="!size-5" />
-                <span className="text-base font-semibold">Acme Inc.</span>
-              </a>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <Suspense fallback={<SuspendedOrganizationSwitcher />}>
+          <OrganizationSwitcher />
+        </Suspense>
       </SidebarHeader>
       <SidebarContent>
         <NavMain />
@@ -39,9 +28,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <React.Suspense fallback={<SuspendedNavUser />}>
+        <Suspense fallback={<SuspendedNavUser />}>
           <NavUser />
-        </React.Suspense>
+        </Suspense>
       </SidebarFooter>
     </Sidebar>
   );
