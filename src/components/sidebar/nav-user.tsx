@@ -46,7 +46,12 @@ export function NavUser() {
             >
               <Avatar className="size-8 rounded-lg grayscale">
                 <AvatarImage src={user.image ?? undefined} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">
+                  {user.name
+                    .split(" ")
+                    .map((i) => i.charAt(0).toUpperCase())
+                    .join("")}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
@@ -67,7 +72,12 @@ export function NavUser() {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="size-8 rounded-lg">
                   <AvatarImage src={user.image ?? undefined} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">
+                    {user.name
+                      .split(" ")
+                      .map((i) => i.charAt(0).toUpperCase())
+                      .join("")}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.name}</span>
@@ -127,7 +137,7 @@ export function SuspendedNavUser() {
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <SidebarMenuSkeleton showIcon />
+        <SidebarMenuSkeleton showIcon className="h-12 w-full" />
       </SidebarMenuItem>
     </SidebarMenu>
   );

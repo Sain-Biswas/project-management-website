@@ -1,7 +1,5 @@
 "use client";
 
-import { IconCirclePlusFilled, IconMail, type Icon } from "@tabler/icons-react";
-
 import { Button } from "@/components/ui/button";
 import {
   SidebarGroup,
@@ -10,16 +8,45 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from "@/components/ui/sidebar";
+import {
+  IconChartBar,
+  IconCirclePlusFilled,
+  IconDashboard,
+  IconFolder,
+  IconListDetails,
+  IconMail,
+  IconUsers
+} from "@tabler/icons-react";
 
-export function NavMain({
-  items
-}: {
-  items: {
-    title: string;
-    url: string;
-    icon?: Icon;
-  }[];
-}) {
+const items = [
+  {
+    title: "Dashboard",
+    url: "#",
+    icon: IconDashboard
+  },
+  {
+    title: "Lifecycle",
+    url: "#",
+    icon: IconListDetails
+  },
+  {
+    title: "Analytics",
+    url: "#",
+    icon: IconChartBar
+  },
+  {
+    title: "Projects",
+    url: "#",
+    icon: IconFolder
+  },
+  {
+    title: "Team",
+    url: "#",
+    icon: IconUsers
+  }
+];
+
+export function NavMain() {
   return (
     <SidebarGroup>
       <SidebarGroupContent className="flex flex-col gap-2">

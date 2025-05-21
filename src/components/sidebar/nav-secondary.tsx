@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { type Icon } from "@tabler/icons-react";
 
 import {
   SidebarGroup,
@@ -10,17 +9,29 @@ import {
   SidebarMenuButton,
   SidebarMenuItem
 } from "@/components/ui/sidebar";
+import { IconHelp, IconSearch, IconSettings } from "@tabler/icons-react";
+
+const items = [
+  {
+    title: "Settings",
+    url: "#",
+    icon: IconSettings
+  },
+  {
+    title: "Get Help",
+    url: "#",
+    icon: IconHelp
+  },
+  {
+    title: "Search",
+    url: "#",
+    icon: IconSearch
+  }
+];
 
 export function NavSecondary({
-  items,
   ...props
-}: {
-  items: {
-    title: string;
-    url: string;
-    icon: Icon;
-  }[];
-} & React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
+}: React.ComponentPropsWithoutRef<typeof SidebarGroup>) {
   return (
     <SidebarGroup {...props}>
       <SidebarGroupContent>
