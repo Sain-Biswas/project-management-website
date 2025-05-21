@@ -1,4 +1,6 @@
+import { relations } from "drizzle-orm";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { organizationMemberSchema } from "./organization-member.schema";
 
 /**
  * Schema for Users for the application.
@@ -21,3 +23,7 @@ export const usersSchema = sqliteTable("USERS", {
     .$defaultFn(() => /* @__PURE__ */ new Date())
     .notNull()
 });
+
+export const usersRelation = relations(usersSchema, ({ many }) => ({
+  organizations: many(organizationMemberSchema)
+}));

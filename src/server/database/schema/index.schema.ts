@@ -1,4 +1,15 @@
 export { accountSchema } from "@/server/database/schema/account.schema";
+export {
+  organizationMemberRelation,
+  organizationMemberSchema
+} from "@/server/database/schema/organization-member.schema";
+export {
+  organizationRelation,
+  organizationSchema
+} from "@/server/database/schema/organization.schema";
 export { sessionSchema } from "@/server/database/schema/session.schema";
-export { usersSchema } from "@/server/database/schema/users.schema";
+export {
+  usersRelation,
+  usersSchema
+} from "@/server/database/schema/users.schema";
 export { verificationSchema } from "@/server/database/schema/verification.schema";
