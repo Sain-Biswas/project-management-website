@@ -12,7 +12,7 @@ const envServer = createEnv({
    * isn't built with invalid env vars.
    */
   server: {
-    DATABASE_URL: z.url(),
+    DATABASE_URL: z.url().or(z.string().refine((v) => v === "file:local.db")),
     DATABASE_AUTH_TOKEN: z.string(),
     NODE_ENV: z
       .enum(["development", "test", "production"])

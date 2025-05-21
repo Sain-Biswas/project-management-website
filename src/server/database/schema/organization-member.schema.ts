@@ -18,7 +18,9 @@ export const organizationMemberSchema = sqliteTable("ORGANIZATION_MEMBER", {
     .references(() => usersSchema.id, {
       onDelete: "cascade"
     }),
-  role: text("ROLE", { enum: ["owner", "admin", "member", "removed"] }),
+  role: text("ROLE", {
+    enum: ["owner", "admin", "member", "removed"]
+  }).$defaultFn(() => "member"),
   joinedOn: integer("JOINED_ON", { mode: "timestamp" }).$defaultFn(
     () => new Date()
   ),

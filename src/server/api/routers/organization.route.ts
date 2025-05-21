@@ -9,7 +9,17 @@ export const organizationRoute = createTRPCRouter({
   newOrganization: protectedProcedure
     .input(organizationInsetValidator)
     .mutation(async ({ ctx, input }) => {
-      await ctx.database.insert(organizationSchema).values(input);
+      await ctx.database.transaction(async (trx) => {
+        const organizationId = await trx
+          .insert(organizationSchema)
+          .values(input)
+          .returning({ id: organizationSchema.id });
+        await trx.insert(organizationMemberSchema).values({
+          organizationId: organizationId[0]?.id ?? "",
+          userId: ctx.session.user.id,
+          role: "owner"
+        });
+      });
     }),
 
   activeOrganization: protectedProcedure.query(async ({ ctx }) => {
