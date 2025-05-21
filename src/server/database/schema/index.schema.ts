@@ -1,5 +1,9 @@
 export { accountSchema } from "@/server/database/schema/account.schema";
 export {
+  activeOrganizationRelation,
+  activeOrganizationSchema
+} from "@/server/database/schema/active-organization.schema";
+export {
   organizationMemberRelation,
   organizationMemberSchema
 } from "@/server/database/schema/organization-member.schema";

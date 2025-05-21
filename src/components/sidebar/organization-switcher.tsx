@@ -1,7 +1,9 @@
 "use client";
 
+import { apiClient } from "@/trpc/react";
 import {
   IconCirclePlusFilled,
+  IconExclamationCircleFilled,
   IconInnerShadowBottom,
   IconInnerShadowTop,
   IconSwitchHorizontal
@@ -25,6 +27,10 @@ import {
 } from "../ui/sidebar";
 
 export function OrganizationSwitcher() {
+  const [activeOrganization] =
+    apiClient.organization.activeOrganization.useSuspenseQuery();
+  const [allOrganization] =
+    apiClient.organization.getOrganizationList.useSuspenseQuery();
   const { isMobile } = useSidebar();
 
   return (
@@ -32,24 +38,52 @@ export function OrganizationSwitcher() {
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-            >
-              <Avatar className="size-8 rounded-lg">
-                <AvatarImage src={undefined} alt="" />
-                <AvatarFallback>
-                  <IconInnerShadowTop className="!size-5" />
-                </AvatarFallback>
-              </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">Acme Inc.</span>
-                <span className="text-muted-foreground truncate text-xs">
-                  Organization
-                </span>
-              </div>
-              <IconSwitchHorizontal className="ml-auto size-4" />
-            </SidebarMenuButton>
+            {activeOrganization ? (
+              <SidebarMenuButton
+                size="lg"
+                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              >
+                <Avatar className="size-8 rounded-lg">
+                  <AvatarImage
+                    src={activeOrganization.image ?? undefined}
+                    alt=""
+                  />
+                  <AvatarFallback>
+                    <IconInnerShadowTop className="!size-5" />
+                  </AvatarFallback>
+                </Avatar>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-medium">
+                    {activeOrganization.name}
+                  </span>
+                  <span className="text-muted-foreground truncate text-xs">
+                    {activeOrganization.category}
+                  </span>
+                </div>
+                <IconSwitchHorizontal className="ml-auto size-4" />
+              </SidebarMenuButton>
+            ) : (
+              <SidebarMenuButton
+                size="lg"
+                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              >
+                <Avatar className="size-8 rounded-lg">
+                  <AvatarImage src={undefined} alt="" />
+                  <AvatarFallback>
+                    <IconExclamationCircleFilled className="!size-5" />
+                  </AvatarFallback>
+                </Avatar>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-medium">
+                    No Active Organization
+                  </span>
+                  <span className="text-muted-foreground truncate text-xs">
+                    Please create or select one.
+                  </span>
+                </div>
+                <IconSwitchHorizontal className="ml-auto size-4" />
+              </SidebarMenuButton>
+            )}
           </DropdownMenuTrigger>
           <DropdownMenuContent
             className="max-w-90 min-w-52 rounded-lg"
@@ -58,15 +92,26 @@ export function OrganizationSwitcher() {
             sideOffset={4}
           >
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Avatar className="size-4 rounded-lg">
-                  <AvatarImage src={undefined} alt="" />
-                  <AvatarFallback>
-                    <IconInnerShadowBottom />
-                  </AvatarFallback>
-                </Avatar>
-                AAcme Inc.
-              </DropdownMenuItem>
+              {allOrganization.length ? (
+                allOrganization.map((organization) => (
+                  <DropdownMenuItem key={organization.id}>
+                    <Avatar className="size-4 rounded-lg">
+                      <AvatarImage
+                        src={organization.image ?? undefined}
+                        alt=""
+                      />
+                      <AvatarFallback>
+                        <IconInnerShadowBottom />
+                      </AvatarFallback>
+                    </Avatar>
+                    {organization.name}
+                  </DropdownMenuItem>
+                ))
+              ) : (
+                <DropdownMenuItem>
+                  No organizations create one to continue.
+                </DropdownMenuItem>
+              )}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <SidebarMenuButton

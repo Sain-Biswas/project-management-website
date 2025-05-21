@@ -57,8 +57,8 @@ export default function SignupForm() {
             });
             router.replace("/dashboard");
           },
-          onError: () => {
-            toast.error("Signup failed.", { description: "Please try again." });
+          onError: ({ error }) => {
+            toast.error("Signup failed.", { description: error.message });
           }
         }
       )

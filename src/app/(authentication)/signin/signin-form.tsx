@@ -54,8 +54,9 @@ export default function SigninForm() {
             });
             router.replace("/dashboard");
           },
-          onError: () => {
-            toast.error("Signin failed.", { description: "Please try again." });
+          onError: ({ error }) => {
+            console.log(error);
+            toast.error("Signin failed.", { description: error.message });
           }
         }
       )
