@@ -27,8 +27,10 @@ import {
 } from "@/components/ui/sidebar";
 import { signOut } from "@/server/auth/auth-client";
 import { apiClient } from "@/trpc/react";
+import { PaintbrushVertical } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import ModeToggleSwitch from "../system/mode-toggle-switch";
 
 export function NavUser() {
   const { isMobile } = useSidebar();
@@ -102,6 +104,13 @@ export function NavUser() {
               <DropdownMenuItem>
                 <IconNotification />
                 Notifications
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex justify-between">
+                <div className="flex items-center gap-2">
+                  <PaintbrushVertical />
+                  <span>Theme</span>
+                </div>
+                <ModeToggleSwitch />
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
