@@ -43,8 +43,6 @@ export default function SignupForm() {
   });
 
   async function onSubmit(values: z.infer<typeof signupSchema>) {
-    console.log(values);
-
     await signUp
       .email(
         {
@@ -127,7 +125,7 @@ export default function SignupForm() {
           )}
         />
         <Button type="submit" className="w-full">
-          Sign up
+          Sign in
         </Button>
       </form>
     </Form>
