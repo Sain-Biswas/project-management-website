@@ -1,11 +1,8 @@
 import { ModeToggleButton } from "@/components/system/mode-toggle-button";
 import { Button } from "@/components/ui/button";
-import { apiServer } from "@/trpc/server";
 import Link from "next/link";
 
 export default async function Home() {
-  const data = await apiServer.post.hello({ text: "my User." });
-
   return (
     <div className="grid min-h-screen grid-rows-[20px_1fr_20px] items-center justify-items-center gap-16 p-8 pb-20 sm:p-20">
       <main className="row-start-2 flex flex-col items-center gap-[32px] sm:items-start">
@@ -23,8 +20,6 @@ export default async function Home() {
         </ol>
 
         <ModeToggleButton />
-
-        <div>{data.greeting}</div>
 
         <div className="flex flex-col items-center gap-4 sm:flex-row">
           <Button className="h-10 rounded-full px-4 sm:h-12 sm:px-5">
