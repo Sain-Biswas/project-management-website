@@ -2,6 +2,11 @@ import { ChartAreaInteractive } from "@/app/(protected)/dashboard/chart-area-int
 import { DataTable } from "@/app/(protected)/dashboard/data-table";
 import { SectionCards } from "@/app/(protected)/dashboard/section-cards";
 import { SiteHeader } from "@/app/(protected)/dashboard/site-header";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Dashboard | Axiom PM"
+};
 
 import data from "./data.json";
 

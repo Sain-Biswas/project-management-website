@@ -13,28 +13,28 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { signUp } from "@/server/auth/auth-client";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { z } from "zod";
+import { z } from "zod/v4";
 
 export const signupSchema = z.object({
-  name: z.string().min(1, "Name is required."),
-  email: z.string().email("Please enter a valid email."),
+  name: z.string().min(1, { error: "Name is required." }),
+  email: z.email({ error: "Please enter a valid email." }),
   password: z
     .string()
-    .min(8, "The password must be at least 8 characters long.")
+    .min(8, { error: "The password must be at least 8 characters long." })
 });
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const router = useRouter();
 
-  const signupForm = useForm({
-    resolver: zodResolver(signupSchema),
+  const signupForm = useForm<z.infer<typeof signupSchema>>({
+    resolver: standardSchemaResolver(signupSchema),
     defaultValues: {
       email: "",
       name: "",

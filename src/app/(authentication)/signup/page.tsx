@@ -1,5 +1,10 @@
 import SignupForm from "@/app/(authentication)/signup/signup-form";
 import { GalleryVerticalEndIcon } from "lucide-react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Signup | Axiom PM"
+};
 
 export default function SignupPage() {
   return (
