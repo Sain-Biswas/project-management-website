@@ -31,6 +31,7 @@ export const signupSchema = z.object({
 
 export default function SignupForm() {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isPending, setIsPending] = useState<boolean>(false);
   const router = useRouter();
 
   const signupForm = useForm<z.infer<typeof signupSchema>>({
@@ -43,6 +44,7 @@ export default function SignupForm() {
   });
 
   async function onSubmit(values: z.infer<typeof signupSchema>) {
+    setIsPending(true);
     await signUp
       .email(
         {
@@ -63,7 +65,8 @@ export default function SignupForm() {
         }
       )
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((_error) => {});
+      .catch((_error) => {})
+      .finally(() => setIsPending(false));
   }
 
   return (
@@ -124,7 +127,12 @@ export default function SignupForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" disabled={isPending}>
+          {!!isPending && (
+            <div className="size-3 animate-spin rounded-full border-t-2 text-transparent">
+              .
+            </div>
+          )}
           Sign in
         </Button>
       </form>
