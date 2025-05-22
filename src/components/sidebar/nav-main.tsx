@@ -14,31 +14,32 @@ import {
   IconUsers,
   IconUsersPlus
 } from "@tabler/icons-react";
+import Link from "next/link";
 
 const items = [
   {
     title: "Dashboard",
-    url: "#",
+    url: "/dashboard",
     icon: IconDashboard
   },
   {
     title: "Analytics",
-    url: "#",
+    url: "/analytics",
     icon: IconChartBar
   },
   {
     title: "Projects",
-    url: "#",
+    url: "/projects",
     icon: IconFolder
   },
   {
     title: "Members",
-    url: "#",
+    url: "/members",
     icon: IconUsers
   },
   {
     title: "Invitations",
-    url: "#",
+    url: "/invitations",
     icon: IconUsersPlus
   }
 ];
@@ -50,10 +51,12 @@ export function NavMain() {
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton tooltip={item.title}>
-                {item.icon && <item.icon />}
-                <span>{item.title}</span>
-              </SidebarMenuButton>
+              <Link href={item.url}>
+                <SidebarMenuButton tooltip={item.title}>
+                  {item.icon && <item.icon />}
+                  <span>{item.title}</span>
+                </SidebarMenuButton>
+              </Link>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>

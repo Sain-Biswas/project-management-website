@@ -1,7 +1,7 @@
 import { ChartAreaInteractive } from "@/app/(protected)/dashboard/chart-area-interactive";
 import { DataTable } from "@/app/(protected)/dashboard/data-table";
 import { SectionCards } from "@/app/(protected)/dashboard/section-cards";
-import { SiteHeader } from "@/app/(protected)/dashboard/site-header";
+import { DashboardSiteHeader } from "@/app/(protected)/dashboard/site-header";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -10,11 +10,11 @@ export const metadata: Metadata = {
 
 import data from "./data.json";
 
-export default function Page() {
+export default function DashboardPage() {
   return (
     <>
-      <SiteHeader />
-      <div className="flex flex-1 flex-col">
+      <DashboardSiteHeader />
+      <main className="flex flex-1 flex-col">
         <div className="@container/main flex flex-1 flex-col gap-2">
           <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
             <SectionCards />
@@ -24,7 +24,7 @@ export default function Page() {
             <DataTable data={data} />
           </div>
         </div>
-      </div>
+      </main>
     </>
   );
 }
