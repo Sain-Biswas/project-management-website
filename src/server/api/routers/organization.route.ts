@@ -3,6 +3,7 @@ import { organizationMemberSchema } from "@/server/database/schema/organization-
 import { organizationSchema } from "@/server/database/schema/organization.schema";
 import { organizationInsetValidator } from "@/validator/organization.validator";
 import { and, eq, ne } from "drizzle-orm";
+import z from "zod/v4";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const organizationRoute = createTRPCRouter({
@@ -22,6 +23,30 @@ export const organizationRoute = createTRPCRouter({
       });
     }),
 
+  changeActiveOrganization: protectedProcedure
+    .input(z.object({ organizationId: z.uuidv4() }))
+    .mutation(async ({ ctx, input }) => {
+      const { organizationId } = input;
+
+      const currentState = await ctx.database
+        .select()
+        .from(activeOrganizationSchema)
+        .where(eq(activeOrganizationSchema.userId, ctx.session.user.id));
+
+      const isPresent = currentState.length > 0;
+
+      if (!!!isPresent) {
+        await ctx.database
+          .insert(activeOrganizationSchema)
+          .values({ userId: ctx.session.user.id, organizationId });
+      } else {
+        await ctx.database
+          .update(activeOrganizationSchema)
+          .set({ organizationId })
+          .where(eq(activeOrganizationSchema.userId, ctx.session.user.id));
+      }
+    }),
+
   activeOrganization: protectedProcedure.query(async ({ ctx }) => {
     const data = await ctx.database.query.activeOrganizationSchema.findFirst({
       where: eq(activeOrganizationSchema.userId, ctx.session.user.id),
@@ -34,10 +59,10 @@ export const organizationRoute = createTRPCRouter({
   }),
 
   getOrganizationList: protectedProcedure.query(async ({ ctx }) => {
-    const activeOrganizationId = await ctx.database
-      .select()
-      .from(activeOrganizationSchema)
-      .where(eq(activeOrganizationSchema.userId, ctx.session.user.id));
+    const activeOrganizationId =
+      await ctx.database.query.activeOrganizationSchema.findFirst({
+        where: eq(activeOrganizationSchema.userId, ctx.session.user.id)
+      });
 
     const allOrganizations =
       await ctx.database.query.organizationMemberSchema.findMany({
@@ -45,7 +70,7 @@ export const organizationRoute = createTRPCRouter({
           eq(organizationMemberSchema.userId, ctx.session.user.id),
           ne(
             organizationMemberSchema.organizationId,
-            activeOrganizationId[0]?.id ?? ""
+            activeOrganizationId?.organizationId ?? ""
           )
         ),
         with: {

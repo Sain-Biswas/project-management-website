@@ -95,6 +95,21 @@ export function OrganizationSwitcher() {
       }
     });
 
+  const changeActiveOrganization =
+    apiClient.organization.changeActiveOrganization.useMutation({
+      async onSuccess() {
+        toast.success("Active organization changed", {
+          description: "Refreshing all data"
+        });
+        await utility.invalidate();
+      },
+      onError() {
+        toast.error("Failed to change organization.", {
+          description: "Please try again after some time."
+        });
+      }
+    });
+
   async function onSubmit(values: z.infer<typeof organizationInsetValidator>) {
     await newOrganizationMutation.mutateAsync(values);
   }
@@ -124,7 +139,9 @@ export function OrganizationSwitcher() {
                       {activeOrganization.name}
                     </span>
                     <span className="text-muted-foreground truncate text-xs">
-                      {activeOrganization.category}
+                      <OrganizationCategoryLabel
+                        category={activeOrganization.category}
+                      />
                     </span>
                   </div>
                   <IconSwitchHorizontal className="ml-auto size-4" />
@@ -161,7 +178,14 @@ export function OrganizationSwitcher() {
               <DropdownMenuGroup>
                 {allOrganization.length ? (
                   allOrganization.map((organization) => (
-                    <DropdownMenuItem key={organization.id}>
+                    <DropdownMenuItem
+                      key={organization.id}
+                      onClick={() =>
+                        changeActiveOrganization.mutate({
+                          organizationId: organization.id
+                        })
+                      }
+                    >
                       <Avatar className="size-4 rounded-lg">
                         <AvatarImage
                           src={organization.image ?? undefined}
@@ -289,5 +313,27 @@ export function SuspendedOrganizationSwitcher() {
         <SidebarMenuSkeleton showIcon className="h-12 w-full" />
       </SidebarMenuSubItem>
     </SidebarMenu>
+  );
+}
+
+function OrganizationCategoryLabel({ category }: { category: string }) {
+  const labelContent = organizationCategoryMap.find(
+    (i) => i.title === category
+  );
+
+  if (!!!labelContent) {
+    return (
+      <div className="flex items-center gap-1">
+        <IconExclamationCircleFilled className="size-4" />
+        <span>Unknown</span>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-1">
+      <labelContent.icon className="size-4" />
+      <span>{labelContent.name}</span>
+    </div>
   );
 }
