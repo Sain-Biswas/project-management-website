@@ -4,6 +4,10 @@ export {
   activeOrganizationSchema
 } from "@/server/database/schema/active-organization.schema";
 export {
+  organizationMemberInvitationRelation,
+  organizationMemberInvitationSchema
+} from "@/server/database/schema/organization-member-invitation.schema";
+export {
   organizationMemberRelation,
   organizationMemberSchema
 } from "@/server/database/schema/organization-member.schema";
