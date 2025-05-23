@@ -1,10 +1,13 @@
+"use client";
+
 import organizationCategoryMap from "@/constants/organization-category.map";
-import { apiServer } from "@/trpc/server";
+import { apiClient } from "@/trpc/react";
 import { IconExclamationCircleFilled } from "@tabler/icons-react";
 import MembersDataTable from "./_table/member-data-table";
 
-export default async function MembersPage() {
-  const activeOrganization = await apiServer.organization.activeOrganization();
+export default function MembersPage() {
+  const [activeOrganization] =
+    apiClient.organization.activeOrganization.useSuspenseQuery();
 
   if (!!!activeOrganization) {
     return (
