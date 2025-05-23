@@ -278,7 +278,7 @@ export function OrganizationSwitcher() {
                         </FormControl>
                         <SelectContent>
                           {organizationCategoryMap.map((item) => (
-                            <SelectItem key={item.title} value={item.title}>
+                            <SelectItem key={item.slug} value={item.slug}>
                               <div className="flex gap-2">
                                 <item.icon />
                                 <span>{item.name}</span>
@@ -317,9 +317,7 @@ export function SuspendedOrganizationSwitcher() {
 }
 
 function OrganizationCategoryLabel({ category }: { category: string }) {
-  const labelContent = organizationCategoryMap.find(
-    (i) => i.title === category
-  );
+  const labelContent = organizationCategoryMap.find((i) => i.slug === category);
 
   if (!!!labelContent) {
     return (

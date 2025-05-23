@@ -23,7 +23,7 @@ export default async function MembersPage() {
   }
 
   const activeOrganizationCategory = organizationCategoryMap.find(
-    (i) => i.title === activeOrganization?.category
+    (i) => i.slug === activeOrganization?.category
   )!;
 
   return (
@@ -40,7 +40,7 @@ export default async function MembersPage() {
           {activeOrganization?.name}
         </h1>
       </section>
-      <section id="members-table">
+      <section id="members-table" className="space-y-6">
         <h1 className="text-xl font-bold md:text-2xl">
           Organization members list
         </h1>

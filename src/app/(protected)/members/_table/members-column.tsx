@@ -59,6 +59,14 @@ export const memberColumns: ColumnDef<TMembersList>[] = [
           </div>
         </div>
       );
+    },
+    filterFn: (row, _columnId, filterValue: string) => {
+      const { email, name } = row.original.users;
+
+      return (
+        email.toLowerCase().includes(filterValue.toLowerCase()) ||
+        name.toLowerCase().includes(filterValue.toLowerCase())
+      );
     }
   },
   {

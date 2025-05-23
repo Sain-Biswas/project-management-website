@@ -67,7 +67,7 @@ export default function MembersDataTable({
 
   return (
     <div className="space-y-6">
-      <MembersDataTableToolbar />
+      <MembersDataTableToolbar table={table} />
       <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader className="bg-muted">

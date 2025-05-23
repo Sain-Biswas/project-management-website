@@ -10,22 +10,22 @@ import {
  */
 const organizationCategoryMap = [
   {
-    title: "enterprise",
+    slug: "enterprise",
     name: "Enterprise",
     icon: IconBuildings
   },
   {
-    title: "startup",
+    slug: "startup",
     name: "Startup",
     icon: IconBuildingCottage
   },
   {
-    title: "free",
+    slug: "free",
     name: "Free",
     icon: IconFreeRights
   },
   {
-    title: "custom",
+    slug: "custom",
     name: "Custom",
     icon: IconAdjustments
   }
