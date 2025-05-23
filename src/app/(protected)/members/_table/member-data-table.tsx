@@ -1,5 +1,6 @@
 "use client";
 
+import DataTablePagination from "@/components/table/data-table-pagination";
 import {
   Table,
   TableBody,
@@ -116,6 +117,7 @@ export default function MembersDataTable({
           </TableBody>
         </Table>
       </div>
+      <DataTablePagination table={table} />
     </div>
   );
 }

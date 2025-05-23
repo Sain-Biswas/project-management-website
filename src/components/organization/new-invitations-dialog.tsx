@@ -13,7 +13,7 @@ import {
 export default function NewInvitationsDialog() {
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <Button variant={"default"} size={"sm"} className="h-8">
           <IconCirclePlusFilled />
           Send Invitation
