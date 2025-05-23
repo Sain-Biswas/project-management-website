@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import {
   IconArrowDownCircleFilled,
@@ -12,6 +14,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "../ui/dropdown-menu";
 
@@ -19,16 +22,14 @@ interface DataTableColumnHeaderProps<TData, TValue>
   extends HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>;
   title: string;
-  canSort: boolean;
 }
 
 export default function DataTableColumnHeader<TData, TValue>({
   column,
   title,
-  canSort,
   className
 }: DataTableColumnHeaderProps<TData, TValue>) {
-  if (!!!column.getCanSort() || canSort) {
+  if (!!!column.getCanSort()) {
     return <div className={cn(className)}>{title}</div>;
   }
 
@@ -58,6 +59,7 @@ export default function DataTableColumnHeader<TData, TValue>({
           <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
             <IconArrowDownCircleFilled /> DESC
           </DropdownMenuItem>
+          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
             <IconEyeOff /> Hide
           </DropdownMenuItem>

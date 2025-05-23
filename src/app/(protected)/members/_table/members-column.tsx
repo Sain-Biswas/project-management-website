@@ -1,8 +1,13 @@
+"use client";
+
 import DataTableColumnHeader from "@/components/table/data-table-column-header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
-import type { RouterOutputs } from "@/trpc/react";
+import organizationMemberRoleMap from "@/constants/organization-member-role.map";
+import { type RouterOutputs } from "@/trpc/react";
 import type { ColumnDef } from "@tanstack/react-table";
+import { format } from "date-fns";
+import MemberDataTableRowAction from "./member-data-table-row-action";
 
 export type TMembersList = RouterOutputs["organization"]["getAllMemberList"][0];
 
@@ -32,17 +37,13 @@ export const memberColumns: ColumnDef<TMembersList>[] = [
   {
     accessorKey: "users",
     header: ({ column }) => (
-      <DataTableColumnHeader
-        canSort={false}
-        column={column}
-        title="Member Details"
-      />
+      <DataTableColumnHeader column={column} title="Member Details" />
     ),
     cell: ({ row }) => {
       const user = row.original.users;
 
       return (
-        <div className="ml-3 flex items-center gap-2">
+        <div className="ml-2 flex items-center gap-2">
           <Avatar>
             <AvatarImage src={user.image ?? undefined} />
             <AvatarFallback>
@@ -59,5 +60,38 @@ export const memberColumns: ColumnDef<TMembersList>[] = [
         </div>
       );
     }
+  },
+  {
+    accessorKey: "role",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Role" />
+    ),
+    cell: ({ row }) => {
+      const roleData = organizationMemberRoleMap.find(
+        (i) => i.slug === row.original.role
+      )!;
+
+      return (
+        <div className="flex items-center gap-2">
+          <roleData.icon className="size-5" />
+          <p className="text-base">{roleData.name}</p>
+        </div>
+      );
+    },
+    enableSorting: false
+  },
+  {
+    accessorKey: "joinedOn",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Joining Date" />
+    ),
+    cell: ({ row }) => {
+      const date = row.original.joinedOn!;
+      return <div className="ml-2">{format(date, "PPPP")}</div>;
+    }
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <MemberDataTableRowAction row={row} />
   }
 ];

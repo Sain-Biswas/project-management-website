@@ -1,7 +1,7 @@
 import organizationCategoryMap from "@/constants/organization-category.map";
 import { apiServer } from "@/trpc/server";
 import { IconExclamationCircleFilled } from "@tabler/icons-react";
-import MembersDataTable from "./member-data-table";
+import MembersDataTable from "./_table/member-data-table";
 
 export default async function MembersPage() {
   const activeOrganization = await apiServer.organization.activeOrganization();

@@ -2,6 +2,7 @@ import { activeOrganizationSchema } from "@/server/database/schema/active-organi
 import { organizationMemberSchema } from "@/server/database/schema/organization-member.schema";
 import { organizationSchema } from "@/server/database/schema/organization.schema";
 import { organizationInsetValidator } from "@/validator/organization.validator";
+import { TRPCError } from "@trpc/server";
 import { and, eq, ne } from "drizzle-orm";
 import z from "zod/v4";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
@@ -45,6 +46,43 @@ export const organizationRoute = createTRPCRouter({
           .set({ organizationId })
           .where(eq(activeOrganizationSchema.userId, ctx.session.user.id));
       }
+    }),
+
+  changeMemberRole: protectedProcedure
+    .input(
+      z.object({
+        memberId: z.string(),
+        role: z.enum(["admin", "member"]),
+        organizationId: z.uuidv4()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const organizationRole = await ctx.database
+        .select()
+        .from(organizationMemberSchema)
+        .where(
+          and(
+            eq(organizationMemberSchema.organizationId, input.organizationId),
+            eq(organizationMemberSchema.userId, ctx.session.user.id)
+          )
+        );
+
+      if (organizationRole[0]?.role !== "owner") {
+        return new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Only the owner can change member roles"
+        });
+      }
+
+      await ctx.database
+        .update(organizationMemberSchema)
+        .set({ role: input.role })
+        .where(
+          and(
+            eq(organizationMemberSchema.organizationId, input.organizationId),
+            eq(organizationMemberSchema.userId, input.memberId)
+          )
+        );
     }),
 
   activeOrganization: protectedProcedure.query(async ({ ctx }) => {
@@ -101,12 +139,35 @@ export const organizationRoute = createTRPCRouter({
               columns: {
                 email: true,
                 image: true,
-                name: true
+                name: true,
+                id: true
               }
             }
           }
         });
 
       return members;
-    })
+    }),
+
+  getMemberRole: protectedProcedure.query(async ({ ctx }) => {
+    const activeOrganization = await ctx.database
+      .select()
+      .from(activeOrganizationSchema)
+      .where(eq(activeOrganizationSchema.userId, ctx.session.user.id));
+    const activeOrganizationId = activeOrganization[0]?.organizationId ?? "";
+
+    console.log(activeOrganizationId);
+
+    const member = await ctx.database
+      .select()
+      .from(organizationMemberSchema)
+      .where(
+        and(
+          eq(organizationMemberSchema.userId, ctx.session.user.id),
+          eq(organizationMemberSchema.organizationId, activeOrganizationId)
+        )
+      );
+
+    return member[0]?.role ?? null;
+  })
 });

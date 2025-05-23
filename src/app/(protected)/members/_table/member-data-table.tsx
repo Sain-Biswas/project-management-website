@@ -31,6 +31,8 @@ export default function MembersDataTable({
 }: {
   organizationId: string;
 }) {
+  "use no memo";
+
   const [membersList] =
     apiClient.organization.getAllMemberList.useSuspenseQuery({
       organizationId
@@ -66,9 +68,9 @@ export default function MembersDataTable({
   return (
     <div className="space-y-6">
       <MembersDataTableToolbar />
-      <div className="rounded-md border">
+      <div className="overflow-hidden rounded-md border">
         <Table>
-          <TableHeader className="">
+          <TableHeader className="bg-muted">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
