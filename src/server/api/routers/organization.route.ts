@@ -79,5 +79,34 @@ export const organizationRoute = createTRPCRouter({
       });
 
     return allOrganizations.map((organization) => organization.organization);
-  })
+  }),
+
+  getAllMemberList: protectedProcedure
+    .input(z.object({ organizationId: z.uuidv4() }))
+    .query(async ({ ctx, input }) => {
+      const members =
+        await ctx.database.query.organizationMemberSchema.findMany({
+          where: eq(
+            organizationMemberSchema.organizationId,
+            input.organizationId
+          ),
+          columns: {
+            id: true,
+            joinedOn: true,
+            role: true,
+            updatedOn: true
+          },
+          with: {
+            users: {
+              columns: {
+                email: true,
+                image: true,
+                name: true
+              }
+            }
+          }
+        });
+
+      return members;
+    })
 });
