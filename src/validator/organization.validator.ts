@@ -22,7 +22,7 @@ export const organizationMemberAddingValidator = z.object({
   userEmail: z.email({
     error: "A valid email is needed for sending invitation"
   }),
-  role: z.enum(["owner", "admin", "member", "removed"], {
+  role: z.enum(["admin", "member"], {
     error: "Member can't be invited without a proper role."
   })
 });

@@ -73,7 +73,7 @@ export const organizationRoute = createTRPCRouter({
         );
 
       if (organizationRole[0]?.role !== "owner") {
-        return new TRPCError({
+        throw new TRPCError({
           code: "UNAUTHORIZED",
           message: "Only the owner can change member roles"
         });
@@ -111,32 +111,29 @@ export const organizationRoute = createTRPCRouter({
         })
       ]);
 
-      if (!!!sendUser) {
-        return new TRPCError({
+      if (!sendUser) {
+        throw new TRPCError({
           code: "BAD_REQUEST",
           message: `No user found with email - ${userEmail}`
         });
       }
 
       if (!!!invitingUser) {
-        return new TRPCError({
+        throw new TRPCError({
           code: "UNAUTHORIZED",
           message: "Must be a registered user of the same organization."
         });
       }
 
       if (invitingUser.role === "member" || invitingUser.role === "removed") {
-        return new TRPCError({
+        throw new TRPCError({
           code: "FORBIDDEN",
           message: "Only a owner or admin can invite others."
         });
       }
 
-      if (
-        invitingUser.role === "admin" &&
-        (role === "admin" || role === "owner")
-      ) {
-        return new TRPCError({
+      if (invitingUser.role === "admin" && role === "admin") {
+        throw new TRPCError({
           code: "FORBIDDEN",
           message: "Admin can only invite others as a member."
         });
@@ -149,6 +146,8 @@ export const organizationRoute = createTRPCRouter({
         sentToId: sendUser.id,
         status: "pending"
       });
+
+      return sendUser.name;
     }),
 
   activeOrganization: protectedProcedure.query(async ({ ctx }) => {
