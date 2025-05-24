@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger
@@ -21,7 +22,10 @@ export default function NewInvitationsDialog() {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Send invitation to others for join</DialogTitle>
+          <DialogTitle>Send invitation to others for joining</DialogTitle>
+          <DialogDescription>
+            Please fill in the details to continue.
+          </DialogDescription>
         </DialogHeader>
       </DialogContent>
     </Dialog>

@@ -1,7 +1,12 @@
 import { activeOrganizationSchema } from "@/server/database/schema/active-organization.schema";
+import { organizationMemberInvitationSchema } from "@/server/database/schema/organization-member-invitation.schema";
 import { organizationMemberSchema } from "@/server/database/schema/organization-member.schema";
 import { organizationSchema } from "@/server/database/schema/organization.schema";
-import { organizationInsetValidator } from "@/validator/organization.validator";
+import { usersSchema } from "@/server/database/schema/users.schema";
+import {
+  organizationInsetValidator,
+  organizationMemberAddingValidator
+} from "@/validator/organization.validator";
 import { TRPCError } from "@trpc/server";
 import { and, eq, ne } from "drizzle-orm";
 import z from "zod/v4";
@@ -83,6 +88,67 @@ export const organizationRoute = createTRPCRouter({
             eq(organizationMemberSchema.userId, input.memberId)
           )
         );
+    }),
+
+  inviteUserToOrganization: protectedProcedure
+    .input(organizationMemberAddingValidator)
+    .mutation(async ({ ctx, input }) => {
+      const { organizationId, role, userEmail } = input;
+      const {
+        database,
+        session: { user }
+      } = ctx;
+
+      const [sendUser, invitingUser] = await Promise.all([
+        database.query.usersSchema.findFirst({
+          where: eq(usersSchema.email, userEmail)
+        }),
+        database.query.organizationMemberSchema.findFirst({
+          where: and(
+            eq(organizationMemberSchema.organizationId, organizationId),
+            eq(organizationMemberSchema.userId, user.id)
+          )
+        })
+      ]);
+
+      if (!!!sendUser) {
+        return new TRPCError({
+          code: "BAD_REQUEST",
+          message: `No user found with email - ${userEmail}`
+        });
+      }
+
+      if (!!!invitingUser) {
+        return new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Must be a registered user of the same organization."
+        });
+      }
+
+      if (invitingUser.role === "member" || invitingUser.role === "removed") {
+        return new TRPCError({
+          code: "FORBIDDEN",
+          message: "Only a owner or admin can invite others."
+        });
+      }
+
+      if (
+        invitingUser.role === "admin" &&
+        (role === "admin" || role === "owner")
+      ) {
+        return new TRPCError({
+          code: "FORBIDDEN",
+          message: "Admin can only invite others as a member."
+        });
+      }
+
+      await database.insert(organizationMemberInvitationSchema).values({
+        organizationId,
+        role,
+        invitedById: user.id,
+        sentToId: sendUser.id,
+        status: "pending"
+      });
     }),
 
   activeOrganization: protectedProcedure.query(async ({ ctx }) => {
