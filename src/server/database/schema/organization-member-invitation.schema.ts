@@ -23,13 +23,15 @@ export const organizationMemberInvitationSchema = sqliteTable(
     }).notNull(),
     status: text("STATUS", {
       enum: ["pending", "accepted", "rejected", "canceled"]
-    }).$defaultFn(() => "pending"),
-    createdAt: integer("CREATED_AT", { mode: "timestamp" }).$defaultFn(
-      () => new Date()
-    ),
-    updatedAt: integer("UPDATED_AT", { mode: "timestamp" }).$defaultFn(
-      () => new Date()
-    )
+    })
+      .notNull()
+      .$defaultFn(() => "pending"),
+    createdAt: integer("CREATED_AT", { mode: "timestamp" })
+      .notNull()
+      .$defaultFn(() => new Date()),
+    updatedAt: integer("UPDATED_AT", { mode: "timestamp" })
+      .notNull()
+      .$defaultFn(() => new Date())
   }
 );
 

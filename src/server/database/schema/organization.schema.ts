@@ -15,10 +15,11 @@ export const organizationSchema = sqliteTable("ORGANIZATION", {
   category: text("CATEGORY", {
     enum: ["enterprise", "startup", "free", "custom"]
   }).notNull(),
-  createdAt: integer("CREATED_AT", { mode: "timestamp" }).$defaultFn(
-    () => new Date()
-  ),
+  createdAt: integer("CREATED_AT", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
   updatedAt: integer("UPDATED_AT", { mode: "timestamp" })
+    .notNull()
     .$defaultFn(() => new Date())
     .$onUpdateFn(() => new Date())
 });

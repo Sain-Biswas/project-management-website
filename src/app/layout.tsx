@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import Providers from "@/components/providers";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
+import { Provider as JotaiProvider } from "jotai";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -19,7 +20,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn("antialiased")}>
-        <Providers>{children}</Providers>
+        <Providers>
+          <JotaiProvider>{children}</JotaiProvider>
+        </Providers>
         <Toaster />
       </body>
     </html>

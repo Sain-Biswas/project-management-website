@@ -95,7 +95,7 @@ export const memberColumns: ColumnDef<TMembersList>[] = [
       <DataTableColumnHeader column={column} title="Joining Date" />
     ),
     cell: ({ row }) => {
-      const date = row.original.joinedOn!;
+      const date = row.original.joinedOn;
       return (
         <div className="ml-2 text-xs text-wrap lg:text-base">
           {format(date, "PPPP")}

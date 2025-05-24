@@ -20,11 +20,14 @@ export const organizationMemberSchema = sqliteTable("ORGANIZATION_MEMBER", {
     }),
   role: text("ROLE", {
     enum: ["owner", "admin", "member", "removed"]
-  }).$defaultFn(() => "member"),
-  joinedOn: integer("JOINED_ON", { mode: "timestamp" }).$defaultFn(
-    () => new Date()
-  ),
+  })
+    .notNull()
+    .$defaultFn(() => "member"),
+  joinedOn: integer("JOINED_ON", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
   updatedOn: integer("UPDATED_ON", { mode: "timestamp" })
+    .notNull()
     .$defaultFn(() => new Date())
     .$onUpdateFn(() => new Date())
 });
