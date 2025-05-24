@@ -7,6 +7,7 @@ import organizationMemberRoleMap from "@/constants/organization-member-role.map"
 import { type RouterOutputs } from "@/trpc/react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
+import ExtendedMemberDetails from "./extended-member-details";
 import MemberDataTableRowAction from "./member-data-table-row-action";
 
 export type TMembersList = RouterOutputs["organization"]["getAllMemberList"][0];
@@ -54,8 +55,8 @@ export const memberColumns: ColumnDef<TMembersList>[] = [
             </AvatarFallback>
           </Avatar>
           <div>
-            <p className="text-lg font-bold">{user.name}</p>
-            <p className="text-xs">{user.email}</p>
+            <p className="text-base font-bold lg:text-lg">{user.name}</p>
+            <p className="text-xs lg:text-xs">{user.email}</p>
           </div>
         </div>
       );
@@ -82,7 +83,7 @@ export const memberColumns: ColumnDef<TMembersList>[] = [
       return (
         <div className="flex items-center gap-2">
           <roleData.icon className="size-5" />
-          <p className="text-base">{roleData.name}</p>
+          <p className="text-xs lg:text-base">{roleData.name}</p>
         </div>
       );
     },
@@ -95,8 +96,16 @@ export const memberColumns: ColumnDef<TMembersList>[] = [
     ),
     cell: ({ row }) => {
       const date = row.original.joinedOn!;
-      return <div className="ml-2">{format(date, "PPPP")}</div>;
+      return (
+        <div className="ml-2 text-xs text-wrap lg:text-base">
+          {format(date, "PPPP")}
+        </div>
+      );
     }
+  },
+  {
+    id: "more-details",
+    cell: ({ row }) => <ExtendedMemberDetails userId={row.original.users.id} />
   },
   {
     id: "actions",

@@ -69,8 +69,8 @@ export default function MembersDataTable({
   return (
     <div className="space-y-6">
       <MembersDataTableToolbar table={table} />
-      <div className="overflow-hidden rounded-md border">
-        <Table>
+      <div className="w-full overflow-hidden rounded-md border">
+        <Table className="w-full">
           <TableHeader className="bg-muted">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
