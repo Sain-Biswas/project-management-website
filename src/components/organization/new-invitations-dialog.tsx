@@ -67,8 +67,7 @@ export default function NewInvitationsDialog() {
     apiClient.organization.inviteUserToOrganization.useMutation({
       onSuccess: (data) => {
         toast.success("Invitation sent successfully", {
-          // eslint-disable-next-line @typescript-eslint/no-base-to-string
-          description: `${data.toString()} can access invitation from invitations page.`
+          description: `${data} can access invitation from invitations page.`
         });
         newInvitationForm.reset();
         setOpen(false);

@@ -154,11 +154,26 @@ export const organizationRoute = createTRPCRouter({
     const data = await ctx.database.query.activeOrganizationSchema.findFirst({
       where: eq(activeOrganizationSchema.userId, ctx.session.user.id),
       with: {
-        organization: true
+        organization: {
+          with: {
+            members: {
+              with: {
+                users: true
+              }
+            }
+          }
+        }
       }
     });
 
-    return data?.organization ?? null;
+    const organizationValue = data?.organization
+      ? {
+          ...data?.organization,
+          owners: data?.organization?.members.filter((i) => i.role === "owner")
+        }
+      : undefined;
+
+    return organizationValue ?? null;
   }),
 
   getOrganizationList: protectedProcedure.query(async ({ ctx }) => {

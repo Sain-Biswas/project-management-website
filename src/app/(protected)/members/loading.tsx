@@ -13,6 +13,12 @@ export default function MembersLoadingPage() {
         </div>
         <Skeleton className="h-12 lg:h-16" />
       </section>
+
+      <section className="flex flex-col gap-2">
+        <Skeleton className="h-4 w-90" />
+        <Skeleton className="h-4 w-full" />
+      </section>
+
       <section className="space-y-6">
         <Skeleton className="h-6 w-76 md:h-8 md:w-92" />
         <div className="flex items-center justify-between">
@@ -27,12 +33,14 @@ export default function MembersLoadingPage() {
           </div>
         </div>
       </section>
+
       <section className="flex flex-1 flex-col items-center justify-center gap-6">
         <div className="size-8 animate-spin rounded-full border-t-2 text-transparent">
           .
         </div>
         <p>Loading</p>
       </section>
+
       <section
         id="member-page-skeleton-suspense"
         className="flex items-center justify-between px-2"
