@@ -28,8 +28,8 @@ export default function MemberGridCard({ member, row }: MemberGridCardProps) {
   )!;
 
   return (
-    <Card className="max-w-full">
-      <CardHeader className="flow-row flex items-center justify-between">
+    <Card className="max-w-full min-w-0">
+      <CardHeader className="flow-row flex min-w-0 items-center justify-between">
         <div className="flex items-center gap-2">
           <Checkbox
             aria-label="Select Row"
@@ -55,7 +55,7 @@ export default function MemberGridCard({ member, row }: MemberGridCardProps) {
         <MemberDataTableRowAction row={row} />
       </CardHeader>
 
-      <CardContent>
+      <CardContent className="min-w-0">
         <p className="text-xs text-wrap lg:text-base">
           Joined on:{" "}
           <span className="text-sm font-bold text-wrap lg:text-lg">
@@ -64,7 +64,7 @@ export default function MemberGridCard({ member, row }: MemberGridCardProps) {
         </p>
       </CardContent>
 
-      <CardFooter className="justify-between">
+      <CardFooter className="min-w-0 justify-between">
         <div className="flex items-center gap-3">
           <roleMap.icon className="size-5" />
           <span className="font-bold">{roleMap.name}</span>
