@@ -39,14 +39,16 @@ export default function MembersPage() {
             <span>{activeOrganizationCategory.name}</span>
           </div>
         </div>
-        <h1 className="line-clamp-1 text-4xl font-extrabold md:text-5xl">
+        <h1 className="line-clamp-1 h-12 text-4xl font-extrabold md:h-16 md:text-5xl">
           {activeOrganization?.name}
         </h1>
       </section>
+
       <section id="members-table" className="space-y-6">
         <h1 className="text-xl font-bold md:text-2xl">
           Organization members list
         </h1>
+
         <MembersDataTable organizationId={activeOrganization.id} />
       </section>
     </main>
