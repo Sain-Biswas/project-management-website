@@ -33,6 +33,25 @@ export default function MembersLoadingPage() {
         </div>
         <p>Loading</p>
       </section>
+      <section
+        id="member-page-skeleton-suspense"
+        className="flex items-center justify-between px-2"
+      >
+        <Skeleton className="block h-4 w-48" />
+        <div className="flex items-center justify-end gap-8">
+          <div className="flex items-center justify-end gap-2">
+            <Skeleton className="h-4 w-28" />
+            <Skeleton className="h-8 w-[70px]" />
+          </div>
+          <Skeleton className="block h-4 w-25" />
+          <div className="flex items-center justify-end gap-2">
+            <Skeleton className="size-8" />
+            <Skeleton className="size-8" />
+            <Skeleton className="size-8" />
+            <Skeleton className="size-8" />
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
