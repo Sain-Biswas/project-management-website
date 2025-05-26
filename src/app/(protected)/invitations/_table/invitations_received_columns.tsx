@@ -3,7 +3,7 @@
 import DataTableColumnHeader from "@/components/table/data-table-column-header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
-import organizationMemberRoleMap from "@/constants/organization-member-role.map";
+import organizationCategoryMap from "@/constants/organization-category.map";
 import type { RouterOutputs } from "@/trpc/react";
 import type { ColumnDef } from "@tanstack/react-table";
 
@@ -41,7 +41,7 @@ const invitationsReceivedColumns: ColumnDef<TReceivedInvitations>[] = [
     cell: ({ row }) => {
       const organization = row.original.organization;
 
-      const category = organizationMemberRoleMap.find(
+      const category = organizationCategoryMap.find(
         (i) => i.slug === organization.category
       );
 

@@ -13,6 +13,7 @@ import z from "zod/v4";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const organizationRoute = createTRPCRouter({
+  /* MUTATION PROCEDURES */
   newOrganization: protectedProcedure
     .input(organizationInsetValidator)
     .mutation(async ({ ctx, input }) => {
@@ -149,6 +150,93 @@ export const organizationRoute = createTRPCRouter({
 
       return sendUser.name;
     }),
+
+  acceptInvitationProcedure: protectedProcedure
+    .input(
+      z.object({
+        invitationId: z.uuidv4()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const {
+        database,
+        session: { user }
+      } = ctx;
+      const { invitationId } = input;
+
+      const invitation =
+        await database.query.organizationMemberInvitationSchema.findFirst({
+          where: eq(organizationMemberInvitationSchema.id, invitationId)
+        });
+
+      if (!invitation) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "No such invitation found."
+        });
+      }
+
+      if (invitation.sentToId !== user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You are not the person invited."
+        });
+      }
+
+      await database.transaction(async (trx) => {
+        await trx.insert(organizationMemberSchema).values({
+          organizationId: invitation.organizationId,
+          userId: invitation.sentToId,
+          role: invitation.role
+        });
+        await trx
+          .update(organizationMemberInvitationSchema)
+          .set({ status: "accepted" })
+          .where(eq(organizationMemberInvitationSchema.id, invitation.id));
+      });
+    }),
+
+  rejectInvitationProcedure: protectedProcedure
+    .input(
+      z.object({
+        invitationId: z.uuidv4()
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const {
+        database,
+        session: { user }
+      } = ctx;
+      const { invitationId } = input;
+
+      const invitation =
+        await database.query.organizationMemberInvitationSchema.findFirst({
+          where: eq(organizationMemberInvitationSchema.id, invitationId)
+        });
+
+      if (!invitation) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "No such invitation found."
+        });
+      }
+
+      if (invitation.sentToId !== user.id) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You are not the person invited."
+        });
+      }
+
+      await database.transaction(async (trx) => {
+        await trx
+          .update(organizationMemberInvitationSchema)
+          .set({ status: "rejected" })
+          .where(eq(organizationMemberInvitationSchema.id, invitation.id));
+      });
+    }),
+
+  /* QUERY PROCEDURES */
 
   activeOrganization: protectedProcedure.query(async ({ ctx }) => {
     const data = await ctx.database.query.activeOrganizationSchema.findFirst({
