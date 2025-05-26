@@ -11,15 +11,15 @@ export default function InvitationsPage() {
 
   return (
     <main className="flex flex-1 flex-col p-4">
-      <Tabs defaultValue="received">
-        <TabsList>
+      <Tabs defaultValue="received" className="flex flex-1 gap-4">
+        <TabsList className="bg-background gap-4">
           <TabsTrigger value="received">Received</TabsTrigger>
           <TabsTrigger value="sent">Sent</TabsTrigger>
         </TabsList>
-        <TabsContent value="received">
+        <TabsContent value="received" className="flex flex-1 flex-col">
           <InvitationsReceivedDataTable />
         </TabsContent>
-        <TabsContent value="sent">
+        <TabsContent value="sent" className="flex flex-1 flex-col">
           {activeOrganization ? (
             <div>Work in Progress</div>
           ) : (

@@ -347,10 +347,45 @@ export const organizationRoute = createTRPCRouter({
 
     const data =
       await database.query.organizationMemberInvitationSchema.findMany({
-        where: eq(organizationMemberInvitationSchema.sentToId, user.id),
+        where: and(
+          eq(organizationMemberInvitationSchema.sentToId, user.id),
+          eq(organizationMemberInvitationSchema.status, "pending")
+        ),
         with: {
           invitedBy: true,
           organization: true
+        }
+      });
+
+    return data ?? null;
+  }),
+
+  getInvitationSent: protectedProcedure.query(async ({ ctx }) => {
+    const {
+      database,
+      session: { user }
+    } = ctx;
+
+    const activeOrganization =
+      await database.query.activeOrganizationSchema.findFirst({
+        where: eq(activeOrganizationSchema.userId, user.id)
+      });
+
+    if (!activeOrganization) {
+      throw new TRPCError({ code: "FORBIDDEN", message: "" });
+    }
+
+    const data =
+      await database.query.organizationMemberInvitationSchema.findMany({
+        where: and(
+          eq(organizationMemberInvitationSchema.invitedById, user.id),
+          eq(
+            organizationMemberInvitationSchema.organizationId,
+            activeOrganization.id
+          )
+        ),
+        with: {
+          sentTo: true
         }
       });
 
