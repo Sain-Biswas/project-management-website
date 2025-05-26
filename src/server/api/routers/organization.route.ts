@@ -249,5 +249,23 @@ export const organizationRoute = createTRPCRouter({
       );
 
     return member[0]?.role ?? null;
+  }),
+
+  getInvitationsReceived: protectedProcedure.query(async ({ ctx }) => {
+    const {
+      database,
+      session: { user }
+    } = ctx;
+
+    const data =
+      await database.query.organizationMemberInvitationSchema.findMany({
+        where: eq(organizationMemberInvitationSchema.sentToId, user.id),
+        with: {
+          invitedBy: true,
+          organization: true
+        }
+      });
+
+    return data ?? null;
   })
 });
