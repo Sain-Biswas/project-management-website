@@ -4,6 +4,7 @@ import DataTableColumnHeader from "@/components/table/data-table-column-header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
 import organizationCategoryMap from "@/constants/organization-category.map";
+import organizationMemberRoleMap from "@/constants/organization-member-role.map";
 import type { RouterOutputs } from "@/trpc/react";
 import type { ColumnDef } from "@tanstack/react-table";
 
@@ -57,7 +58,7 @@ const invitationsReceivedColumns: ColumnDef<TReceivedInvitations>[] = [
             </AvatarFallback>
           </Avatar>
           <div>
-            <p className="text-base font-bold lg:text-lg">
+            <p className="text-sm font-bold lg:text-base">
               {organization.name}
             </p>
             {category ? (
@@ -69,6 +70,51 @@ const invitationsReceivedColumns: ColumnDef<TReceivedInvitations>[] = [
               <></>
             )}
           </div>
+        </div>
+      );
+    }
+  },
+  {
+    accessorKey: "invitedBy",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Invited By" />
+    ),
+    cell: ({ row }) => {
+      const invitedBy = row.original.invitedBy;
+
+      return (
+        <div className="ml-2 flex items-center gap-2">
+          <Avatar>
+            <AvatarImage src={invitedBy.image ?? undefined} />
+            <AvatarFallback>
+              {invitedBy.name
+                .split(" ")
+                .map((i) => i.charAt(0).toUpperCase())
+                .join("")}
+            </AvatarFallback>
+          </Avatar>
+          <div>
+            <p className="text-base font-bold lg:text-lg">{invitedBy.name}</p>
+            <p className="text-xs">{invitedBy.email}</p>
+          </div>
+        </div>
+      );
+    }
+  },
+  {
+    accessorKey: "role",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Role" />
+    ),
+    cell: ({ row }) => {
+      const role = organizationMemberRoleMap.find(
+        (i) => i.slug === row.original.role
+      )!;
+
+      return (
+        <div className="flex items-center gap-2">
+          <role.icon className="size-5" />
+          <p>{role.name}</p>
         </div>
       );
     }
